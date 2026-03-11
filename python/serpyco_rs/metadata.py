@@ -9,11 +9,13 @@ from ._impl import CustomEncoder
 @dataclass(frozen=True)
 class Min:
     value: Union[int, float]
+    inclusive: bool = True
 
 
 @dataclass(frozen=True)
 class Max:
     value: Union[int, float]
+    inclusive: bool = True
 
 
 @dataclass(frozen=True)

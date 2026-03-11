@@ -87,7 +87,14 @@ def _(arg: describe.NeverType, doc: Optional[str] = None, *, config: Config) -> 
 
 @to_json_schema.register
 def _(arg: describe.IntegerType, doc: Optional[str] = None, *, config: Config) -> Schema:
-    return IntegerType(minimum=arg.min, maximum=arg.max, description=doc, config=config)
+    return IntegerType(
+        minimum=arg.min if arg.inclusive_min else None,
+        maximum=arg.max if arg.inclusive_max else None,
+        exclusiveMinimum=arg.min if not arg.inclusive_min else None,
+        exclusiveMaximum=arg.max if not arg.inclusive_max else None,
+        description=doc,
+        config=config,
+    )
 
 
 @to_json_schema.register
@@ -97,7 +104,14 @@ def _(_: describe.BytesType, doc: Optional[str] = None, *, config: Config) -> Sc
 
 @to_json_schema.register
 def _(arg: describe.FloatType, doc: Optional[str] = None, *, config: Config) -> Schema:
-    return NumberType(minimum=arg.min, maximum=arg.max, description=doc, config=config)
+    return NumberType(
+        minimum=arg.min if arg.inclusive_min else None,
+        maximum=arg.max if arg.inclusive_max else None,
+        exclusiveMinimum=arg.min if not arg.inclusive_min else None,
+        exclusiveMaximum=arg.max if not arg.inclusive_max else None,
+        description=doc,
+        config=config,
+    )
 
 
 @to_json_schema.register
@@ -144,7 +158,7 @@ def _(arg: describe.EnumType, doc: Optional[str] = None, *, config: Config) -> S
     enum_values = [item.value for item in arg.items]
     type_ = None
     if (types := {type(item.value) for item in arg.items}) and len(types) == 1:
-        type_ = {int: 'integer', str: 'string'}.get(types.pop(), None)
+        type_ = {int: 'integer', str: 'string'}.get(types.pop())
 
     return Schema(
         type=type_,

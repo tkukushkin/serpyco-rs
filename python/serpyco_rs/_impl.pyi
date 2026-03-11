@@ -54,25 +54,46 @@ class NeverType(BaseType):
 class IntegerType(BaseType):
     min: int | None
     max: int | None
+    inclusive_min: bool
+    inclusive_max: bool
 
     def __init__(
-        self, min: int | None = None, max: int | None = None, custom_encoder: CustomEncoder[Any, Any] | None = None
+        self,
+        min: int | None = None,
+        max: int | None = None,
+        inclusive_min: bool = True,
+        inclusive_max: bool = True,
+        custom_encoder: CustomEncoder[Any, Any] | None = None,
     ) -> None: ...
 
 class FloatType(BaseType):
     min: float | None
     max: float | None
+    inclusive_min: bool
+    inclusive_max: bool
 
     def __init__(
-        self, min: float | None, max: float | None, custom_encoder: CustomEncoder[Any, Any] | None
+        self,
+        min: float | None = None,
+        max: float | None = None,
+        inclusive_min: bool = True,
+        inclusive_max: bool = True,
+        custom_encoder: CustomEncoder[Any, Any] | None = None,
     ) -> None: ...
 
 class DecimalType(BaseType):
     min: float | None
     max: float | None
+    inclusive_min: bool
+    inclusive_max: bool
 
     def __init__(
-        self, min: float | None, max: float | None, custom_encoder: CustomEncoder[Any, Any] | None
+        self,
+        min: float | None = None,
+        max: float | None = None,
+        inclusive_min: bool = True,
+        inclusive_max: bool = True,
+        custom_encoder: CustomEncoder[Any, Any] | None = None,
     ) -> None: ...
 
 class StringType(BaseType):

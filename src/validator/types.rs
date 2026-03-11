@@ -174,28 +174,46 @@ pub struct IntegerType {
     pub min: Option<i64>,
     #[pyo3(get)]
     pub max: Option<i64>,
+    #[pyo3(get)]
+    pub inclusive_min: bool,
+    #[pyo3(get)]
+    pub inclusive_max: bool,
 }
 
 #[pymethods]
 impl IntegerType {
     #[new]
-    #[pyo3(signature = (min=None, max=None, custom_encoder=None))]
+    #[pyo3(signature = (min=None, max=None, inclusive_min=true, inclusive_max=true, custom_encoder=None))]
     fn new(
         min: Option<i64>,
         max: Option<i64>,
+        inclusive_min: bool,
+        inclusive_max: bool,
         custom_encoder: Option<&Bound<'_, PyAny>>,
     ) -> PyClassInitializer<Self> {
-        BaseType::new(custom_encoder).add_subclass(Self { min, max })
+        BaseType::new(custom_encoder).add_subclass(Self {
+            min,
+            max,
+            inclusive_min,
+            inclusive_max,
+        })
     }
 
     fn __eq__(self_: PyRef<'_, Self>, other: PyRef<'_, Self>, py: Python<'_>) -> PyResult<bool> {
         let base = self_.as_ref();
         let base_other = other.as_ref();
-        Ok(base.__eq__(base_other, py)? && self_.min == other.min && self_.max == other.max)
+        Ok(base.__eq__(base_other, py)?
+            && self_.min == other.min
+            && self_.max == other.max
+            && self_.inclusive_min == other.inclusive_min
+            && self_.inclusive_max == other.inclusive_max)
     }
 
     fn __repr__(&self) -> String {
-        format!("<IntegerType: min={:?}, max={:?}>", self.min, self.max)
+        format!(
+            "<IntegerType: min={:?}, max={:?}, inclusive_min={}, inclusive_max={}>",
+            self.min, self.max, self.inclusive_min, self.inclusive_max
+        )
     }
 }
 
@@ -206,28 +224,46 @@ pub struct FloatType {
     pub min: Option<f64>,
     #[pyo3(get)]
     pub max: Option<f64>,
+    #[pyo3(get)]
+    pub inclusive_min: bool,
+    #[pyo3(get)]
+    pub inclusive_max: bool,
 }
 
 #[pymethods]
 impl FloatType {
     #[new]
-    #[pyo3(signature = (min=None, max=None, custom_encoder=None))]
+    #[pyo3(signature = (min=None, max=None, inclusive_min=true, inclusive_max=true, custom_encoder=None))]
     fn new(
         min: Option<f64>,
         max: Option<f64>,
+        inclusive_min: bool,
+        inclusive_max: bool,
         custom_encoder: Option<&Bound<'_, PyAny>>,
     ) -> PyClassInitializer<Self> {
-        BaseType::new(custom_encoder).add_subclass(Self { min, max })
+        BaseType::new(custom_encoder).add_subclass(Self {
+            min,
+            max,
+            inclusive_min,
+            inclusive_max,
+        })
     }
 
     fn __eq__(self_: PyRef<'_, Self>, other: PyRef<'_, Self>, py: Python<'_>) -> PyResult<bool> {
         let base = self_.as_ref();
         let base_other = other.as_ref();
-        Ok(base.__eq__(base_other, py)? && self_.min == other.min && self_.max == other.max)
+        Ok(base.__eq__(base_other, py)?
+            && self_.min == other.min
+            && self_.max == other.max
+            && self_.inclusive_min == other.inclusive_min
+            && self_.inclusive_max == other.inclusive_max)
     }
 
     fn __repr__(&self) -> String {
-        format!("<FloatType: min={:?}, max={:?}>", self.min, self.max)
+        format!(
+            "<FloatType: min={:?}, max={:?}, inclusive_min={}, inclusive_max={}>",
+            self.min, self.max, self.inclusive_min, self.inclusive_max
+        )
     }
 }
 
@@ -238,28 +274,46 @@ pub struct DecimalType {
     pub min: Option<f64>,
     #[pyo3(get)]
     pub max: Option<f64>,
+    #[pyo3(get)]
+    pub inclusive_min: bool,
+    #[pyo3(get)]
+    pub inclusive_max: bool,
 }
 
 #[pymethods]
 impl DecimalType {
     #[new]
-    #[pyo3(signature = (min=None, max=None, custom_encoder=None))]
+    #[pyo3(signature = (min=None, max=None, inclusive_min=true, inclusive_max=true, custom_encoder=None))]
     fn new(
         min: Option<f64>,
         max: Option<f64>,
+        inclusive_min: bool,
+        inclusive_max: bool,
         custom_encoder: Option<&Bound<'_, PyAny>>,
     ) -> PyClassInitializer<Self> {
-        BaseType::new(custom_encoder).add_subclass(Self { min, max })
+        BaseType::new(custom_encoder).add_subclass(Self {
+            min,
+            max,
+            inclusive_min,
+            inclusive_max,
+        })
     }
 
     fn __eq__(self_: PyRef<'_, Self>, other: PyRef<'_, Self>, py: Python<'_>) -> PyResult<bool> {
         let base = self_.as_ref();
         let base_other = other.as_ref();
-        Ok(base.__eq__(base_other, py)? && self_.min == other.min && self_.max == other.max)
+        Ok(base.__eq__(base_other, py)?
+            && self_.min == other.min
+            && self_.max == other.max
+            && self_.inclusive_min == other.inclusive_min
+            && self_.inclusive_max == other.inclusive_max)
     }
 
     fn __repr__(&self) -> String {
-        format!("<FloatType: min={:?}, max={:?}>", self.min, self.max)
+        format!(
+            "<DecimalType: min={:?}, max={:?}, inclusive_min={}, inclusive_max={}>",
+            self.min, self.max, self.inclusive_min, self.inclusive_max
+        )
     }
 }
 

@@ -306,6 +306,8 @@ class _TypeResolver:
             return number_type(
                 min=cast(Any, min_meta.value) if min_meta else None,
                 max=cast(Any, max_meta.value) if max_meta else None,
+                inclusive_min=min_meta.inclusive if min_meta else True,
+                inclusive_max=max_meta.inclusive if max_meta else True,
                 custom_encoder=custom_encoder,
             )
 
@@ -315,6 +317,8 @@ class _TypeResolver:
             return DecimalType(
                 min=min_meta.value if min_meta else None,
                 max=max_meta.value if max_meta else None,
+                inclusive_min=min_meta.inclusive if min_meta else True,
+                inclusive_max=max_meta.inclusive if max_meta else True,
                 custom_encoder=custom_encoder,
             )
 
