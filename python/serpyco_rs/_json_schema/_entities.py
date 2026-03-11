@@ -74,6 +74,8 @@ class NumberType(Schema):
     type: str = 'number'  # pyright: ignore[reportIncompatibleVariableOverride]
     minimum: float | None = None
     maximum: float | None = None
+    exclusiveMinimum: float | None = None
+    exclusiveMaximum: float | None = None
     format: str | None = None
 
     def dump(self, definitions: dict[str, Any]) -> dict[str, Any]:
@@ -81,6 +83,8 @@ class NumberType(Schema):
         data = {
             'minimum': self.minimum,
             'maximum': self.maximum,
+            'exclusiveMinimum': self.exclusiveMinimum,
+            'exclusiveMaximum': self.exclusiveMaximum,
             'format': self.format,
             **data,
         }

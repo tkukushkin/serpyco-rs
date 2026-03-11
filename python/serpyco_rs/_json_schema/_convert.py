@@ -87,7 +87,14 @@ def _(arg: describe.NeverType, doc: Optional[str] = None, *, config: Config) -> 
 
 @to_json_schema.register
 def _(arg: describe.IntegerType, doc: Optional[str] = None, *, config: Config) -> Schema:
-    return IntegerType(minimum=arg.min, maximum=arg.max, description=doc, config=config)
+    return IntegerType(
+        minimum=arg.min if arg.inclusive_min else None,
+        maximum=arg.max if arg.inclusive_max else None,
+        exclusiveMinimum=arg.min if not arg.inclusive_min else None,
+        exclusiveMaximum=arg.max if not arg.inclusive_max else None,
+        description=doc,
+        config=config,
+    )
 
 
 @to_json_schema.register
@@ -97,7 +104,14 @@ def _(_: describe.BytesType, doc: Optional[str] = None, *, config: Config) -> Sc
 
 @to_json_schema.register
 def _(arg: describe.FloatType, doc: Optional[str] = None, *, config: Config) -> Schema:
-    return NumberType(minimum=arg.min, maximum=arg.max, description=doc, config=config)
+    return NumberType(
+        minimum=arg.min if arg.inclusive_min else None,
+        maximum=arg.max if arg.inclusive_max else None,
+        exclusiveMinimum=arg.min if not arg.inclusive_min else None,
+        exclusiveMaximum=arg.max if not arg.inclusive_max else None,
+        description=doc,
+        config=config,
+    )
 
 
 @to_json_schema.register
