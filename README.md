@@ -266,19 +266,28 @@ print(ser.load([{'type': 'foo', 'value': 1}, {'type': 'bar', 'value': 'buz'}]))
 
 Supported for `int` / `float` / `Decimal` types and only for validation on load.
 
+By default, bounds are **inclusive** (matching JSON Schema `minimum`/`maximum` semantics). Use `inclusive=False` for exclusive bounds (`exclusiveMinimum`/`exclusiveMaximum`).
+
 ```python
 from typing import Annotated
 from serpyco_rs import Serializer
 from serpyco_rs.metadata import Min, Max
 
+# Inclusive (default): 1 <= value <= 10
 ser = Serializer(Annotated[int, Min(1), Max(10)])
-
+ser.load(1)   # OK
+ser.load(10)  # OK
 ser.load(123)
 >> SchemaValidationError: [ErrorItem(message='123 is greater than the maximum of 10', instance_path='')]
+
+# Exclusive: 0 < value < 100
+ser = Serializer(Annotated[float, Min(0, inclusive=False), Max(100, inclusive=False)])
+ser.load(0.0)
+>> SchemaValidationError: [ErrorItem(message='0 is less than the minimum of 0', instance_path='')]
 ```
 
 ### MinLength / MaxLength
-`MinLength` / `MaxLength` can be used to restrict the length of loaded strings.
+`MinLength` / `MaxLength` can be used to restrict the length of loaded strings or lists. Bounds are **inclusive**.
 
 ```python
 from typing import Annotated
@@ -286,6 +295,7 @@ from serpyco_rs import Serializer
 from serpyco_rs.metadata import MinLength
 
 ser = Serializer(Annotated[str, MinLength(5)])
+ser.load("hello")  # OK (exactly 5 characters)
 
 ser.load("1234")
 >> SchemaValidationError: [ErrorItem(message='"1234" is shorter than 5 characters', instance_path='')]
