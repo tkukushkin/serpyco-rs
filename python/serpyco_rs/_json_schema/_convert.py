@@ -158,7 +158,7 @@ def _(arg: describe.EnumType, doc: Optional[str] = None, *, config: Config) -> S
     enum_values = [item.value for item in arg.items]
     type_ = None
     if (types := {type(item.value) for item in arg.items}) and len(types) == 1:
-        type_ = {int: 'integer', str: 'string'}.get(types.pop(), None)
+        type_ = {int: 'integer', str: 'string'}.get(types.pop())
 
     return Schema(
         type=type_,
